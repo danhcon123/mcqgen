@@ -4,8 +4,8 @@ import pandas as pd
 import traceback
 import PyPDF2
 from dotenv import load_dotenv
-from utils import read_file, get_table_data
-from logger import logging
+from .utils import read_file, get_table_data
+from .logger import logging
 
 #importing necessary packages from langchain
 from langchain.llms.openai import OpenAI
