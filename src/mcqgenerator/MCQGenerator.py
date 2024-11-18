@@ -11,6 +11,7 @@ from .logger import logging
 from langchain.llms.openai import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
+from langchain_core.runnables import RunnableSequence
 from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
 from langchain.callbacks import get_openai_callback
