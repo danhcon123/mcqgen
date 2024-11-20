@@ -8,21 +8,19 @@ from .utils import read_file, get_table_data
 from .logger import logging
 
 #importing necessary packages from langchain
-from langchain.llms.openai import OpenAI
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import PromptTemplate
+from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableSequence
-from langchain.chains import LLMChain
-from langchain.chains import SequentialChain
-from langchain.callbacks import get_openai_callback
+from langchain.chains import SequentialChain, LLMChain
+from langchain_community.callbacks.manager import get_openai_callback
 
 #load environment variables from .env file
 load_dotenv()
 
 #Acces the env variables just like you would with os.environment
+#Define LLM
 key=os.getenv("OPENAI_API_KEY")
-
-
 llm=ChatOpenAI(openai_api_key=key, model_name = "gpt-3.5-turbo", temperature=0.7)
 
 TEMPLATE="""
@@ -43,8 +41,6 @@ quiz_generation_prompt = PromptTemplate(
 )
 
 
-quiz_chain=LLMChain(llm=llm, prompts=quiz_generation_prompt, output_key="quiz", verbose=True)
-
 
 TEMPLATE_2="""
 You are an expert english grammarian and writer. Given a Multiple Choice Quiz for {subject} students. \
@@ -61,18 +57,30 @@ Check from an expert in English Writer of the above quiz:
 quiz_evaluation_prompt=PromptTemplate(input_variables=["subject", "quiz"], template=TEMPLATE_2)
 
 
-review_chain=LLMChain(llm=llm, prompt=quiz_evaluation_prompt, output_key="review", verbose=True )
+quiz_chain = quiz_generation_prompt | llm
+#quiz_chain=LLMChain(llm=llm, prompt=quiz_generation_prompt, output_key="quiz", verbose=True)
+
+review_chain = quiz_evaluation_prompt | llm
+#review_chain=LLMChain(llm=llm, prompt=quiz_evaluation_prompt, output_key="review", verbose=True )
 
 #Create chain sequence
-generate_evaluation_chain=SequentialChain(chains=[quiz_chain, review_chain], input_variables=["text", "number", "subject", "tone", "responses_json"],
-                                          output_variables=["quiz", "review"], verbose=True)
+generate_evaluation_chain= quiz_chain | quiz_evaluation_prompt
 
 #Token usage tracking
 #How to setup Token usage Tracking in Langchain
 #Use this to calculate the token and the cost of input and generated output tokens through OPEN AI API
-# No money -> No result. Sr. This is how OpenAI works 
+# No money -> No result. Sr. This is how OpenAI works
+'''
+
+TEXT = "Sample text for generating MCQs."
+NUMBER = 5
+SUBJECT = "Mathematics"
+TONE = "formal"
+RESPONSE_JSON = {"questions": []}
+
+# Token usage tracking
 with get_openai_callback() as cb:
-    response=generate_evaluation_chain(
+    response=generate_evaluation_chain.invoke(
         {
             "text": TEXT,
             "number": NUMBER,
@@ -81,3 +89,5 @@ with get_openai_callback() as cb:
             "responses_json": json.dumps(RESPONSE_JSON)
         }
     )
+    print("Token usage:", cb)
+'''
