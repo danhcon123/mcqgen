@@ -4,12 +4,13 @@
 
 ## Description
 
+
 Small web app using OpenAI with the LangChain library to create Multiple-Choice Questions (MCQs) with a Streamlit interface.
 
 The app allows you to upload a .txt or .pdf file and uses the OpenAI API to analyze the content, generate questions with multiple-choice answers, and provide the correct answer relevant to the text.
 
 Additionally, below the questions and answers table, a short feedback section about the generated text will be displayed.
----
+
 <div align="center">
     <img src="images/Input_image.png" alt="Input" title="Input" width="600">
 </div>
@@ -17,7 +18,7 @@ Additionally, below the questions and answers table, a short feedback section ab
 <div align="center">
     <img src="images/Output_image.png" alt="Output" title="Output" width="600">
 </div>
----
+
 
 ## Installation and Setup
 
