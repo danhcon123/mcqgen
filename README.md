@@ -13,9 +13,7 @@ Additionally, below the questions and answers table, a short feedback section ab
 <div align="center">
     <img src="images/Input_image.png" alt="Input" title="Input" width="600">
 </div>
----
 
----
 <div align="center">
     <img src="images/Output_image.png" alt="Output" title="Output" width="600">
 </div>
