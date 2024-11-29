@@ -37,14 +37,31 @@ To make the program runnable, you need to retrieve your OpenAI API key and eithe
 - Add it directly to the code in MCQGEN/src/mcqgenerator/MCQGenerator.py at line 23:
   
     #Delete the "#" symbol
-    openai_api_key = "your_api_key_here"
+    OPENAI_API_KEY = "your_api_key_here"
 
-Steps to Retrieve the OpenAI API Key:
+- OR create a .env file by:
+    $ touch .env
+and then open it by:
+    
+    $ vi .env
 
-- Log in to OpenAI API.
-- Navigate to Dashboard → API Keys.
-- Click on Create new secret key.
-- Copy the generated API key.
+paste the openAI key format in this form
+    
+    OPENAI_API_KEY = "your_api_key_here"
+
+then press ECS and give in the last line
+    
+    :wq
+
+and press "Enter" to initialize your openai API key.
+
+
+- Steps to Retrieve the OpenAI API Key:
+
+-> Log in to OpenAI API.
+-> Navigate to Dashboard → API Keys.
+-> Click on Create new secret key.
+-> Copy the generated API key.
 
 ### Step3: Run the programm
 
