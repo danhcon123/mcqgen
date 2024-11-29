@@ -13,13 +13,14 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableSequence
 from langchain.chains import SequentialChain, LLMChain
-from langchain_community.callbacks.manager import get_openai_callback
+from langchain_community.callbacks import get_openai_callback
 
 #load environment variables from .env file
 load_dotenv()
 
 #Acces the env variables just like you would with os.environment
 #Define LLM
+#openai_api_key = ""
 key=os.getenv("OPENAI_API_KEY")
 llm=ChatOpenAI(openai_api_key=key, model_name = "gpt-3.5-turbo", temperature=0.7)
 
@@ -57,7 +58,7 @@ Check from an expert in English Writer of the above quiz:
 quiz_evaluation_prompt=PromptTemplate(input_variables=["subject", "quiz"], template=TEMPLATE_2)
 
 
-quiz_chain = quiz_generation_prompt | llm
+'''quiz_chain = quiz_generation_prompt | llm
 #quiz_chain=LLMChain(llm=llm, prompt=quiz_generation_prompt, output_key="quiz", verbose=True)
 
 review_chain = quiz_evaluation_prompt | llm
@@ -65,18 +66,34 @@ review_chain = quiz_evaluation_prompt | llm
 
 #Create chain sequence
 generate_evaluation_chain= quiz_chain | quiz_evaluation_prompt
+'''
+# Create LLM chains for quiz generation and evaluation
+quiz_chain = LLMChain(llm=llm, prompt=quiz_generation_prompt, output_key="quiz", verbose=True)
+review_chain = LLMChain(llm=llm, prompt=quiz_evaluation_prompt, output_key="review", verbose=True)
 
+# Combine them into a sequential chain
+generate_evaluation_chain = SequentialChain(
+    chains=[quiz_chain, review_chain],
+    input_variables=["text", "number", "subject", "tone", "responses_json"],
+    output_variables=["quiz", "review"],
+    verbose=True
+)
 #Token usage tracking
 #How to setup Token usage Tracking in Langchain
 #Use this to calculate the token and the cost of input and generated output tokens through OPEN AI API
 # No money -> No result. Sr. This is how OpenAI works
+
+
 '''
 
 TEXT = "Sample text for generating MCQs."
 NUMBER = 5
 SUBJECT = "Mathematics"
 TONE = "formal"
-RESPONSE_JSON = {"questions": []}
+RESPONSE_JSON = {"questions": [
+    {"question" : "", "options" : ["", "", "", ""], "answer": ""}
+    ]
+}
 
 # Token usage tracking
 with get_openai_callback() as cb:

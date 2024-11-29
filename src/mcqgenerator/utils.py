@@ -6,7 +6,7 @@ import traceback
 def read_file(file):
     if file.name.endswith(".pdf"):
         try:
-            pdf_reader=PyPDF2.PdfFileReader(file)
+            pdf_reader=PyPDF2.PdfReader(file)
             text=""
             for page in pdf_reader.pages:
                 text+=page.extract_text()
@@ -22,7 +22,7 @@ def read_file(file):
         raise Exception(
             "unsupported file format only pdf and text file supported"
             )
-
+    
 
 def get_table_data(quiz_str):
     try:

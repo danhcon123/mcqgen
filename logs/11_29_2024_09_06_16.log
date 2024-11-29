@@ -1,0 +1,1 @@
+[2024-11-29 09:06:19,183] 1038 httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
