@@ -10,8 +10,13 @@ The app allows you to upload a .txt or .pdf file and uses the OpenAI API to anal
 
 Additionally, below the questions and answers table, a short feedback section about the generated text will be displayed.
 
+---
 ![Example Image](images/Input_image.png "Input")
+---
+
+---
 ![Example Image](images/Output_image.png "Output")
+---
 
 ---
 
